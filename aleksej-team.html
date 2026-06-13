@@ -94,7 +94,7 @@ body {
   font-size: 24px; font-weight: 900; letter-spacing: 0.03em;
   text-transform: uppercase; color: #fff;
   padding: 6px 20px; border-radius: 999px;
-  margin-top: 4px; opacity: 0.55;
+  margin-top: 4px;
 }
 .drive-name {
   font-size: 9.5px; font-weight: 900; letter-spacing: 0.1em;
@@ -337,8 +337,7 @@ function dirChip(score, driveColor) {
               : dir === 'DOWN'    ? `↓ DOWN · ${score} · ${intensity}`
               : `~ NEUTRAL · 5`;
   const bg = dir === 'UP' ? driveColor : dir === 'DOWN' ? '#6B7280' : '#9CA3AF';
-  const opacity = dir === 'DOWN' ? '0.75' : '1';
-  return `<span class="dir-chip" style="background:${bg};opacity:${opacity}">${label}</span>`;
+  return `<span class="dir-chip" style="background:${bg}">${label}</span>`;
 }
 
 // ═══════════════════════════════════════════════════════
@@ -473,7 +472,7 @@ function showFullProfile(pi) {
             </div>` : `<div style="flex:1;"></div>`}
           <div style="text-align:center;margin-top:8px;">
             <div style="font-size:7.5px;color:#c0c0c0;font-style:italic;margin-bottom:3px;">${drive.avoidDesc}</div>
-            <div style="display:inline-block;background:${drive.color};color:#fff;opacity:0.45;
+            <div style="display:inline-block;background:${drive.color};color:#fff;
               padding:2px 11px;border-radius:999px;font-size:9px;font-weight:900;letter-spacing:0.07em;">
               ↓ ${drive.avoidWord}
             </div>
