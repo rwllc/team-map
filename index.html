@@ -6,38 +6,19 @@
 <title>ID Team Maps</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif;
-  background: #f8f8f8;
-  min-height: 100vh;
-  padding: 48px 36px 60px;
-}
+body { font-family: -apple-system, "Helvetica Neue", system-ui, sans-serif; background: #f8f8f8; min-height: 100vh; padding: 48px 36px 60px; }
 .header { text-align: center; margin-bottom: 48px; }
 .header-title { font-size: 26px; font-weight: 900; letter-spacing: -0.02em; color: #111; margin-bottom: 6px; }
 .header-sub { font-size: 12px; color: #aaa; letter-spacing: 0.04em; }
-.grid { display: flex; flex-wrap: wrap; gap: 18px; justify-content: center; max-width: 900px; margin: 0 auto; }
-.card {
-  background: #fff; border-radius: 14px; padding: 22px 24px;
-  width: 260px; text-decoration: none; color: inherit;
-  border: 2px solid #f0f0f0;
-  transition: border-color 0.15s, box-shadow 0.15s, transform 0.12s;
-  display: flex; flex-direction: column; gap: 8px;
-}
+.section-label { font-size: 10px; font-weight: 900; letter-spacing: 0.12em; text-transform: uppercase; color: #bbb; text-align: center; margin-bottom: 16px; margin-top: 36px; }
+.grid { display: flex; flex-wrap: wrap; gap: 18px; justify-content: center; max-width: 980px; margin: 0 auto; }
+.card { background: #fff; border-radius: 14px; padding: 22px 24px; width: 260px; text-decoration: none; color: inherit; border: 2px solid #f0f0f0; transition: border-color 0.15s, box-shadow 0.15s, transform 0.12s; display: flex; flex-direction: column; gap: 8px; }
 .card:hover { border-color: #ddd; box-shadow: 0 4px 18px rgba(0,0,0,0.09); transform: translateY(-2px); }
-.card-tag {
-  font-size: 9px; font-weight: 900; letter-spacing: 0.12em; text-transform: uppercase;
-  color: #fff; padding: 3px 9px; border-radius: 999px; display: inline-block; align-self: flex-start;
-}
+.card-tag { font-size: 9px; font-weight: 900; letter-spacing: 0.12em; text-transform: uppercase; color: #fff; padding: 3px 9px; border-radius: 999px; display: inline-block; align-self: flex-start; }
 .card-title { font-size: 15px; font-weight: 800; color: #111; line-height: 1.2; }
 .card-sub { font-size: 11px; color: #888; font-weight: 500; }
 .card-members { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 4px; }
-.member-dot {
-  width: 22px; height: 22px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 7px; font-weight: 900; color: #fff;
-  border: 1.5px solid rgba(255,255,255,0.5);
-  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
-}
+.member-dot { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 7px; font-weight: 900; color: #fff; border: 1.5px solid rgba(255,255,255,0.5); box-shadow: 0 1px 3px rgba(0,0,0,0.15); }
 .card-arrow { font-size: 18px; color: #e0e0e0; margin-top: auto; align-self: flex-end; line-height: 1; }
 .card:hover .card-arrow { color: #bbb; }
 .footer { text-align: center; margin-top: 48px; font-size: 10px; color: #ccc; letter-spacing: 0.04em; }
@@ -47,15 +28,16 @@ body {
 
 <div class="header">
   <div class="header-title">ID Team Maps</div>
-  <div class="header-sub">Instinctive Drives® · 8 Words · Needs, Talents &amp; Vulnerabilities</div>
+  <div class="header-sub">Instinctive Drives&#174; &middot; 8 Words &middot; Needs, Talents &amp; Vulnerabilities</div>
 </div>
 
+<div class="section-label">True North Zagreb &#8212; Search Teams</div>
 <div class="grid">
 
   <a class="card" href="aleksej-team.html">
     <span class="card-tag" style="background:#1D4ED8">TN Zagreb</span>
-    <div class="card-title">Aleksej's Team</div>
-    <div class="card-sub">5 members · June 2026</div>
+    <div class="card-title">Aleksej&#x2019;s Team</div>
+    <div class="card-sub">5 members &middot; June 2026</div>
     <div class="card-members">
       <div class="member-dot" style="background:#1D4ED8" title="Aleksej Todorovic">AT</div>
       <div class="member-dot" style="background:#7C3AED" title="Michael Milinkovic">MM</div>
@@ -63,13 +45,114 @@ body {
       <div class="member-dot" style="background:#D97706" title="Milan Pavicic">MP</div>
       <div class="member-dot" style="background:#DC2626" title="Travis Stewart">TS</div>
     </div>
-    <div class="card-arrow">→</div>
+    <div class="card-arrow">&#8594;</div>
   </a>
+
+  <a class="card" href="annie-team.html">
+    <span class="card-tag" style="background:#7C3AED">TN Zagreb</span>
+    <div class="card-title">Annie&#x2019;s Team</div>
+    <div class="card-sub">6 members &middot; June 2026</div>
+    <div class="card-members">
+      <div class="member-dot" style="background:#7C3AED" title="Slavisa Tumenko">ST</div>
+      <div class="member-dot" style="background:#DC2626" title="Dragan Zrnic">DZ</div>
+      <div class="member-dot" style="background:#0369A1" title="Slobodan Jovanovic">SJ</div>
+      <div class="member-dot" style="background:#BE185D" title="Jelena Bosnjak">JB</div>
+      <div class="member-dot" style="background:#15803D" title="Aleksandar Galic">AG</div>
+      <div class="member-dot" style="background:#B45309" title="Annie Turpin (Guide)">AT</div>
+    </div>
+    <div class="card-arrow">&#8594;</div>
+  </a>
+
+  <a class="card" href="april-team.html">
+    <span class="card-tag" style="background:#0F766E">TN Zagreb</span>
+    <div class="card-title">April&#x2019;s Team</div>
+    <div class="card-sub">5 members &middot; June 2026</div>
+    <div class="card-members">
+      <div class="member-dot" style="background:#7C3AED" title="Marijana Zeljkovic">MZ</div>
+      <div class="member-dot" style="background:#1D4ED8" title="Tia Aljets">TA</div>
+      <div class="member-dot" style="background:#15803D" title="Milan Popadic">MP</div>
+      <div class="member-dot" style="background:#C2410C" title="Lazar Milic">LM</div>
+      <div class="member-dot" style="background:#0F766E" title="April Joy (Guide)">AJ</div>
+    </div>
+    <div class="card-arrow">&#8594;</div>
+  </a>
+
+  <a class="card" href="darko-team.html">
+    <span class="card-tag" style="background:#B45309">TN Zagreb</span>
+    <div class="card-title">Darko&#x2019;s Team</div>
+    <div class="card-sub">6 members &middot; June 2026</div>
+    <div class="card-members">
+      <div class="member-dot" style="background:#7C3AED" title="Jovan Malesevic">JM</div>
+      <div class="member-dot" style="background:#1D4ED8" title="Marko Jorgic">MJ</div>
+      <div class="member-dot" style="background:#15803D" title="Aleksandar Kartelj">AK</div>
+      <div class="member-dot" style="background:#BE185D" title="Delibor Tesanovic">DT</div>
+      <div class="member-dot" style="background:#C2410C" title="Julia Marchi">JU</div>
+      <div class="member-dot" style="background:#B45309" title="Darko Bogojevic (Guide)">DB</div>
+    </div>
+    <div class="card-arrow">&#8594;</div>
+  </a>
+
+  <a class="card" href="don-team.html">
+    <span class="card-tag" style="background:#0F766E">TN Zagreb</span>
+    <div class="card-title">Don&#x2019;s Team</div>
+    <div class="card-sub">6 members &middot; June 2026</div>
+    <div class="card-members">
+      <div class="member-dot" style="background:#BE185D" title="Jovana Nikolic">JN</div>
+      <div class="member-dot" style="background:#1D4ED8" title="Nenad Sormaz">NS</div>
+      <div class="member-dot" style="background:#15803D" title="Ratomir Tesic">RT</div>
+      <div class="member-dot" style="background:#7C3AED" title="Jackey White">JW</div>
+      <div class="member-dot" style="background:#C2410C" title="Dragan Jovic">DJ</div>
+      <div class="member-dot" style="background:#0F766E" title="Don Lee (Guide)">DL</div>
+    </div>
+    <div class="card-arrow">&#8594;</div>
+  </a>
+
+  <a class="card" href="marko-team.html">
+    <span class="card-tag" style="background:#DC2626">TN Zagreb</span>
+    <div class="card-title">Marko&#x2019;s Team</div>
+    <div class="card-sub">6 members &middot; June 2026</div>
+    <div class="card-members">
+      <div class="member-dot" style="background:#DC2626" title="Srdan Vukadinovic">SV</div>
+      <div class="member-dot" style="background:#7C3AED" title="Nikola Susa">NS</div>
+      <div class="member-dot" style="background:#1D4ED8" title="Dajan Spiric">DS</div>
+      <div class="member-dot" style="background:#15803D" title="Stefan Babic">SB</div>
+      <div class="member-dot" style="background:#C2410C" title="Ethan Lee">EL</div>
+      <div class="member-dot" style="background:#B45309" title="Marko Losic (Guide)">ML</div>
+    </div>
+    <div class="card-arrow">&#8594;</div>
+  </a>
+
+</div>
+
+<div class="section-label">True North Zagreb &#8212; Guides</div>
+<div class="grid">
+
+  <a class="card" href="guides-team.html">
+    <span class="card-tag" style="background:#111">TN Zagreb</span>
+    <div class="card-title">Guides Team</div>
+    <div class="card-sub">8 members &middot; June 2026</div>
+    <div class="card-members">
+      <div class="member-dot" style="background:#7C3AED" title="Jeremiah Gardner">JG</div>
+      <div class="member-dot" style="background:#BE185D" title="Christa Gannon">CG</div>
+      <div class="member-dot" style="background:#B45309" title="Marko Losic">ML</div>
+      <div class="member-dot" style="background:#0F766E" title="Don Lee">DL</div>
+      <div class="member-dot" style="background:#15803D" title="April Joy">AJ</div>
+      <div class="member-dot" style="background:#1D4ED8" title="Darko Bogojevic">DB</div>
+      <div class="member-dot" style="background:#DC2626" title="Aleksej Todorovic">AL</div>
+      <div class="member-dot" style="background:#0369A1" title="Annie Turpin">AN</div>
+    </div>
+    <div class="card-arrow">&#8594;</div>
+  </a>
+
+</div>
+
+<div class="section-label">ID Coaches</div>
+<div class="grid">
 
   <a class="card" href="id-coaches.html">
     <span class="card-tag" style="background:#7C3AED">ID Coaches</span>
     <div class="card-title">ID Coaches Team Map</div>
-    <div class="card-sub">5 members · June 2026</div>
+    <div class="card-sub">5 members &middot; June 2026</div>
     <div class="card-members">
       <div class="member-dot" style="background:#7C3AED" title="Tracy Kennedy">TK</div>
       <div class="member-dot" style="background:#1D4ED8" title="Bob Wood">BW</div>
@@ -77,12 +160,12 @@ body {
       <div class="member-dot" style="background:#15803D" title="Patricia Murray-Childree">PM</div>
       <div class="member-dot" style="background:#C2410C" title="Ben Bradley">BB</div>
     </div>
-    <div class="card-arrow">→</div>
+    <div class="card-arrow">&#8594;</div>
   </a>
 
 </div>
 
-<div class="footer">Instinctive Drives® · I.D. System™ · rwllc</div>
+<div class="footer">Instinctive Drives&#174; &middot; I.D. System&#8482; &middot; rwllc</div>
 
 </body>
 </html>

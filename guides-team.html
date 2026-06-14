@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>8 Words Team Map &#x2014; TN Zagreb — Guides Team</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif; background: #fff; padding: 32px 36px 36px; min-width: 680px; }
+.title { font-size: 20px; font-weight: 800; letter-spacing: -0.02em; text-align: center; color: #111; margin-bottom: 3px; }
+.subtitle { font-size: 11px; color: #aaa; text-align: center; margin-bottom: 30px; letter-spacing: 0.03em; }
+.grid { display: flex; gap: 14px; align-items: flex-start; }
+.col  { flex: 1; display: flex; flex-direction: column; align-items: center; }
+.up-badge { font-size: 26px; font-weight: 900; letter-spacing: 0.03em; text-transform: uppercase; color: #fff; padding: 7px 22px; border-radius: 999px; margin-bottom: 5px; }
+.up-desc { font-size: 13px; font-weight: 700; color: #444; margin-bottom: 5px; text-align: center; }
+.track { position: relative; width: 100%; height: 500px; border-radius: 14px; border: 2.5px solid; overflow: hidden; }
+.zone-70-strip { position: absolute; left: 0; right: 0; top: 0; height: 10%; opacity: 0.55; }
+.zone-70-label { position: absolute; left: 5px; top: 5%; transform: translateY(-50%); font-size: 8px; font-weight: 900; opacity: 0.75; }
+.zone-divider { position: absolute; left: 6px; right: 6px; top: 10%; height: 1px; opacity: 0.35; border-top: 1.5px dashed; }
+.gridline { position: absolute; left: 0; right: 0; height: 1px; background: rgba(0,0,0,0.07); }
+.tick { position: absolute; right: 5px; font-size: 7.5px; font-weight: 700; color: rgba(0,0,0,0.22); transform: translateY(-50%); line-height: 1; }
+.neutral-label { position: absolute; left: 50%; transform: translateX(-50%); font-size: 7px; font-weight: 900; letter-spacing: 0.08em; opacity: 0.4; text-transform: uppercase; white-space: nowrap; }
+.dot { position: absolute; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 900; color: #fff; transform: translate(-50%, -50%); border: 2px solid rgba(255,255,255,0.65); box-shadow: 0 1px 4px rgba(0,0,0,0.25); cursor: pointer; transition: transform 0.12s, box-shadow 0.12s; z-index: 2; }
+.dot:hover { transform: translate(-50%, -50%) scale(1.22); box-shadow: 0 3px 10px rgba(0,0,0,0.35); }
+.down-desc { font-size: 13px; font-weight: 700; color: #999; margin-top: 5px; text-align: center; }
+.down-badge { font-size: 24px; font-weight: 900; letter-spacing: 0.03em; text-transform: uppercase; color: #fff; padding: 6px 20px; border-radius: 999px; margin-top: 4px; }
+.drive-name { font-size: 9.5px; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 7px; }
+.legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 20px; margin-top: 22px; padding-top: 16px; border-top: 1px solid #f0f0f0; }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: #222; font-weight: 700; }
+.legend-swatch { width: 17px; height: 17px; border-radius: 50%; flex-shrink: 0; }
+.legend-id { font-weight: 400; color: #999; font-size: 11px; margin-left: 3px; }
+.legend-name { cursor: pointer; text-decoration: underline; text-decoration-style: dotted; text-underline-offset: 2px; }
+.legend-name:hover { text-decoration-style: solid; }
+.footer { text-align: center; margin-top: 12px; font-size: 9px; color: #ccc; letter-spacing: 0.04em; }
+.modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.42); z-index: 200; align-items: center; justify-content: center; }
+.modal-overlay.active { display: flex; }
+.modal-box { background: #fff; border-radius: 16px; padding: 24px 24px 20px; max-width: 480px; width: 92%; position: relative; box-shadow: 0 12px 40px rgba(0,0,0,0.22); max-height: 88vh; overflow: hidden; display: flex; flex-direction: column; }
+.modal-close { position: absolute; top: 12px; right: 14px; font-size: 20px; line-height: 1; cursor: pointer; color: #bbb; background: none; border: none; padding: 2px 6px; border-radius: 6px; }
+.modal-close:hover { color: #333; background: #f5f5f5; }
+.modal-header { font-size: 16px; font-weight: 800; margin-bottom: 3px; padding-right: 28px; }
+.modal-subhead { font-size: 11px; color: #999; margin-bottom: 14px; font-weight: 500; display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+.modal-scroll { overflow-y: auto; padding-right: 4px; flex: 1; }
+.ntv-block { margin-bottom: 11px; }
+.ntv-label { font-size: 9px; font-weight: 900; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 2px; }
+.ntv-text { font-size: 12.5px; color: #333; line-height: 1.5; }
+.drive-card { border-radius: 10px; padding: 12px 13px; margin-bottom: 10px; border-left: 3px solid; }
+.drive-card-head { font-size: 10px; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 9px; display: flex; align-items: center; gap: 7px; }
+.dir-chip { font-size: 9px; font-weight: 800; padding: 1px 7px; border-radius: 999px; color: #fff; letter-spacing: 0.06em; }
+</style>
+</head>
+<body>
+
+<div class="title"  id="chartTitle"></div>
+<div class="subtitle" id="chartSub"></div>
+<div class="grid" id="grid"></div>
+<div class="legend" id="legend"></div>
+<div class="footer">Instinctive Drives&#174; &middot; I.D. System&#8482; &nbsp;&middot;&nbsp; Click any dot or name for insights</div>
+<div id="profilePanel" style="display:none; margin-top:28px; padding-top:22px; border-top:2px solid #f0f0f0;"></div>
+<div class="modal-overlay" id="modal" onclick="handleOverlayClick(event)">
+  <div class="modal-box" id="modalBox">
+    <button class="modal-close" onclick="closeModal()">&#215;</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script>
+const TITLE    = "TN Zagreb — Guides Team";
+const SUBTITLE = "Instinctive Drives®  ·  8 Words Team Map  ·  True North Zagreb  ·  June 2026";
+
+// scores: [Verify, Authenticate, Complete, Improvise]
+const TEAM = [
+  { first:'Jeremiah', last:'Gardner',              init:'JG', color:'#7C3AED', id:'4737', scores:[4,7,3,7] },
+  { first:'Christa',  last:'Gannon',               init:'CG', color:'#BE185D', id:'7544', scores:[70,5,4,4] },
+  { first:'Marko',    last:'Lošić',      init:'ML', color:'#B45309', id:'4682', scores:[4,6,8,2] },
+  { first:'Don',      last:'Lee',                  init:'DL', color:'#0F766E', id:'7454', scores:[70,4,5,4] },
+  { first:'April',    last:'Joy',                  init:'AJ', color:'#15803D', id:'7543', scores:[7,5,4,3] },
+  { first:'Darko',    last:'Bogojević',        init:'DB', color:'#1D4ED8', id:'7562', scores:[7,5,6,2] },
+  { first:'Aleksej',  last:'Todorović',        init:'AL', color:'#DC2626', id:'5672', scores:[5,6,7,2] },
+  { first:'Annie',    last:'Turpin',               init:'AN', color:'#0369A1', id:'5763', scores:[5,7,6,3] },
+];
+
+const DRIVES = [
+  { name:'VERIFY',       color:'#7C3AED', bg:'#EDE9FE', useWord:'RIGHT',    useDesc:'Get it Right',    avoidWord:'ACCEPT',   avoidDesc:'Accept as-is' },
+  { name:'AUTHENTICATE', color:'#15803D', bg:'#DCFCE7', useWord:'REAL',     useDesc:'Make it Real',    avoidWord:'IDEAL',    avoidDesc:'Make it Ideal' },
+  { name:'COMPLETE',     color:'#BE185D', bg:'#FCE7F3', useWord:'WHOLE',    useDesc:'Keep it Whole',   avoidWord:'FLEXIBLE', avoidDesc:'Keep it Flexible' },
+  { name:'IMPROVISE',    color:'#B45309', bg:'#FEF3C7', useWord:'POSSIBLE', useDesc:'Make it Possible',avoidWord:'CERTAIN',  avoidDesc:'Make it Certain' },
+];
+
+const NTV = {
+  VERIFY: {
+    UP:      { need:"To get it right - accuracy, proper process, and thorough verification before moving forward. The higher the score, the stronger this pull.", talent:"Detail orientation, quality control, catching errors others miss, holding high standards.", vuln:"Perfectionism can stall progress; may be seen as nitpicking, slow, or hard to satisfy. More intense at 8-9." },
+    NEUTRAL: { need:"Score of 5 - true center. This drive is not pulling in either direction.", talent:"Can observe and adapt to what the situation calls for without a personal stake in being right or accepting.", vuln:"May have difficulty taking a strong position on quality standards when one is needed." },
+    DOWN:    { need:"To accept things as they are and move on. At a 4 this is light - at a 1 it is very strong.", talent:"Speed and pragmatism - does not get paralyzed by imperfection; keeps things moving.", vuln:"May overlook errors or skip important checks; can frustrate high-Verify teammates who need things right." }
+  },
+  AUTHENTICATE: {
+    UP:      { need:"To deal with what is real - concrete facts, honest assessment, no pretense or spin. Stronger at 8-9.", talent:"Straight talk, pragmatism, keeping teams grounded in reality over wishful thinking.", vuln:"Can be blunt to the point of dismissive; may shut down visionary thinking before it has a chance." },
+    NEUTRAL: { need:"Score of 5 - true center. No strong pull toward the real or the ideal.", talent:"Can move between pragmatic and visionary contexts without friction.", vuln:"May not challenge either direction strongly when one is clearly needed." },
+    DOWN:    { need:"To pursue the ideal - inspired by what could be rather than what currently is. At a 4 this is a light pull; at a 1 it is a dominant driver.", talent:"Vision, inspiration, painting a compelling picture of what is possible.", vuln:"Can seem unrealistic or detached; may struggle when the ideal collides with the messy reality of execution." }
+  },
+  COMPLETE: {
+    UP:      { need:"Closure - to finish what is started, follow through completely, and resolve open loops. More intense at 8-9.", talent:"Persistence, reliability, thoroughness - will see it through no matter what.", vuln:"May hold on too long or resist pivoting; ambiguity and unresolved threads cause real discomfort." },
+    NEUTRAL: { need:"Score of 5 - true center. No strong drive toward closure or flexibility.", talent:"Can adapt to both structured completion and open-ended environments.", vuln:"May struggle to advocate for either finishing or pivoting when the team needs a clear stance." },
+    DOWN:    { need:"Freedom from being locked in - flexibility to adapt as things evolve. A 4 is a light preference; a 1 is a strong aversion to being pinned down.", talent:"Adaptability, parallel thinking, pivoting quickly without losing momentum.", vuln:"Leaves loose ends; can struggle to finish; frustrating to teammates who need closure." }
+  },
+  IMPROVISE: {
+    UP:      { need:"To find a way - improvise, experiment, make things work with what is available. Stronger at 8-9.", talent:"Resourcefulness, creative problem-solving, thriving under uncertainty and pressure.", vuln:"May skip planning or create chaos; frustrating to those who need structure and predictability." },
+    NEUTRAL: { need:"Score of 5 - true center. No strong pull toward improvising or toward certainty.", talent:"Can operate in both structured and unstructured environments without strong resistance.", vuln:"May not push for planning when it is needed, or for flexibility when the plan is not working." },
+    DOWN:    { need:"Certainty - clear plans, proven methods, knowing what is coming. At a 4 this is light; at a 1 or 2 it is a dominant need for structure.", talent:"Process discipline, reliability, consistency - does exactly what they say they will do.", vuln:"Can resist new approaches or improvised solutions; may shut down or freeze when the plan falls apart." }
+  }
+};
+
+function getDir(s){ return (s===70||s>=6)?'UP':s<=4?'DOWN':'NEUTRAL'; }
+function getIntensity(s){ if(s===70)return'extreme'; if(s===9||s===1)return'very strong'; if(s===8||s===2)return'strong'; if(s===7||s===3)return'moderate'; if(s===6||s===4)return'light'; return'neutral'; }
+function dirChip(s,c){ const d=getDir(s),i=getIntensity(s),l=s===70?'&#8593; 70 — Extreme':d==='UP'?`&#8593; UP · ${s} · ${i}`:d==='DOWN'?`&#8595; DOWN · ${s} · ${i}`:'~ NEUTRAL · 5',bg=d==='UP'?c:d==='DOWN'?'#6B7280':'#9CA3AF'; return`<span class="dir-chip" style="background:${bg}">${l}</span>`; }
+
+function closeModal(){ document.getElementById('modal').classList.remove('active'); }
+function handleOverlayClick(e){ if(e.target===document.getElementById('modal'))closeModal(); }
+document.addEventListener('keydown',e=>{ if(e.key==='Escape')closeModal(); });
+
+function showDriveInsight(pi,di){
+  const p=TEAM[pi],drive=DRIVES[di],s=p.scores[di],d=getDir(s),ntv=NTV[drive.name][d];
+  const w=d==='UP'?`&#8593; ${drive.useWord} — ${drive.useDesc}`:d==='DOWN'?`&#8595; ${drive.avoidWord} — ${drive.avoidDesc}`:'~ Neutral';
+  document.getElementById('modalContent').innerHTML=`
+    <div class="modal-header" style="color:${p.color}">${p.first} ${p.last}</div>
+    <div class="modal-subhead"><span style="background:${drive.color};color:#fff;padding:2px 9px;border-radius:999px;font-size:9.5px;font-weight:800;letter-spacing:0.08em;">${drive.name}</span>${dirChip(s,drive.color)}</div>
+    <div style="font-size:11.5px;font-weight:700;color:${drive.color};margin-bottom:15px;padding-bottom:12px;border-bottom:1px solid #f0f0f0;">${w}</div>
+    <div class="modal-scroll">
+      <div class="ntv-block"><div class="ntv-label" style="color:#1D4ED8">Need</div><div class="ntv-text">${ntv.need}</div></div>
+      <div class="ntv-block"><div class="ntv-label" style="color:#15803D">Talent</div><div class="ntv-text">${ntv.talent}</div></div>
+      <div class="ntv-block"><div class="ntv-label" style="color:#B45309">Vulnerability</div><div class="ntv-text">${ntv.vuln}</div></div>
+    </div>`;
+  document.getElementById('modal').classList.add('active');
+}
+
+function showFullProfile(pi){
+  const p=TEAM[pi],panel=document.getElementById('profilePanel');
+  function ntvBlock(ntv){ return`<div style="font-size:9px;line-height:1.55;color:#333;"><div style="margin-bottom:6px;"><span style="display:inline-block;font-size:6.5px;font-weight:900;letter-spacing:0.12em;color:#fff;background:#1D4ED8;padding:1px 5px;border-radius:3px;margin-bottom:2px;">NEED</span><br>${ntv.need}</div><div style="margin-bottom:6px;"><span style="display:inline-block;font-size:6.5px;font-weight:900;letter-spacing:0.12em;color:#fff;background:#15803D;padding:1px 5px;border-radius:3px;margin-bottom:2px;">TALENT</span><br>${ntv.talent}</div><div><span style="display:inline-block;font-size:6.5px;font-weight:900;letter-spacing:0.12em;color:#fff;background:#B45309;padding:1px 5px;border-radius:3px;margin-bottom:2px;">VULNERABILITY</span><br>${ntv.vuln}</div></div>`; }
+  let cols='';
+  DRIVES.forEach((drive,di)=>{
+    const s=p.scores[di],d=getDir(s),i=getIntensity(s),ntv=NTV[drive.name][d],isUp=d==='UP',isDown=d==='DOWN',isN=d==='NEUTRAL',sl=s===70?'70':s;
+    cols+=`<div style="flex:1;min-width:0;border:2.5px solid ${drive.color};border-radius:12px;display:flex;flex-direction:column;">
+      <div style="background:${drive.bg};padding:10px 9px 8px;border-bottom:1.5px solid ${drive.color}22;border-radius:10px 10px 0 0;display:flex;flex-direction:column;min-height:180px;">
+        <div style="text-align:center;margin-bottom:8px;"><div style="display:inline-block;background:${drive.color};color:#fff;padding:3px 11px;border-radius:999px;font-size:9px;font-weight:900;letter-spacing:0.07em;">&#8593; ${drive.useWord}</div><div style="font-size:7.5px;color:#777;font-style:italic;margin-top:3px;">${drive.useDesc}</div></div>
+        ${isUp?`<div style="background:rgba(255,255,255,0.72);border-radius:7px;padding:8px 9px;border-left:3px solid ${drive.color};flex:1;"><div style="font-size:8px;font-weight:800;color:${drive.color};margin-bottom:5px;letter-spacing:0.02em;">Score ${sl} · ${i}</div>${ntvBlock(ntv)}</div>`:'<div style="flex:1;"></div>'}
+      </div>
+      <div style="padding:4px 8px;background:#f4f4f4;border-top:1.5px dashed ${drive.color}55;border-bottom:1.5px dashed ${drive.color}55;text-align:center;font-size:6.5px;font-weight:900;letter-spacing:0.1em;color:#bbb;">— NEUTRAL · 5 —${isN?`&nbsp;<span style="color:${drive.color};font-size:7.5px;">${p.init} · ${sl}</span>`:''}</div>
+      <div style="background:#f9f9f9;padding:8px 9px 10px;display:flex;flex-direction:column;min-height:180px;border-radius:0 0 10px 10px;">
+        ${isDown?`<div style="background:rgba(255,255,255,0.82);border-radius:7px;padding:8px 9px;border-left:3px solid #9CA3AF;flex:1;"><div style="font-size:8px;font-weight:800;color:#6B7280;margin-bottom:5px;letter-spacing:0.02em;">Score ${sl} · ${i}</div>${ntvBlock(ntv)}</div>`:'<div style="flex:1;"></div>'}
+        <div style="text-align:center;margin-top:8px;"><div style="font-size:7.5px;color:#c0c0c0;font-style:italic;margin-bottom:3px;">${drive.avoidDesc}</div><div style="display:inline-block;background:${drive.color};color:#fff;padding:2px 11px;border-radius:999px;font-size:9px;font-weight:900;letter-spacing:0.07em;">&#8595; ${drive.avoidWord}</div></div>
+      </div>
+    </div>`;
+  });
+  panel.innerHTML=`<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;"><div><span style="font-size:15px;font-weight:800;color:${p.color};">${p.first} ${p.last}</span><span style="font-size:11px;color:#bbb;margin-left:9px;">I.D. ${p.id} · NTV by Drive</span></div><button onclick="document.getElementById('profilePanel').style.display='none'" style="background:none;border:1px solid #e8e8e8;border-radius:6px;padding:4px 12px;font-size:11px;color:#aaa;cursor:pointer;letter-spacing:0.02em;">close ×</button></div><div style="display:flex;gap:12px;align-items:stretch;">${cols}</div>`;
+  panel.style.display='block';
+  panel.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+const ZONE_70_H=0.10;
+function scorePct(s){ if(s===70)return ZONE_70_H/2; return ZONE_70_H+(9-s)/8*(0.99-ZONE_70_H); }
+function getGroups(di){ const g={}; TEAM.forEach((p,pi)=>{ const s=p.scores[di]; (g[s]=g[s]||[]).push(pi); }); return g; }
+
+document.getElementById('chartTitle').textContent=TITLE;
+document.getElementById('chartSub').textContent=SUBTITLE;
+const grid=document.getElementById('grid');
+
+DRIVES.forEach((drive,di)=>{
+  const grps=getGroups(di);
+  let inner='';
+  for(let s=1;s<=9;s++){ const t=scorePct(s)*100; inner+=`<div class="gridline" style="top:${t}%"></div><div class="tick" style="top:${t}%">${s}</div>`; }
+  const t6=scorePct(6)*100,t4=scorePct(4)*100,t5=scorePct(5)*100,bH=(t4-t6)*0.30;
+  inner+=`<div style="position:absolute;left:0;right:0;top:${t5-bH/2}%;height:${bH}%;background:${drive.bg};border:1.5px solid ${drive.color};border-radius:4px;opacity:0.6"></div><div class="neutral-label" style="color:${drive.color};top:${t5}%">NEUTRAL</div>`;
+  TEAM.forEach((person,pi)=>{
+    const s=person.scores[di],topPct=scorePct(s)*100,grp=grps[s],idx=grp.indexOf(pi),n=grp.length,spread=18;
+    let left=50; if(n>1){left=50+(idx-(n-1)/2)*spread;left=Math.max(14,Math.min(86,left));}
+    inner+=`<div class="dot" title="Click — ${person.first}'s full profile" style="background:${person.color};top:${topPct}%;left:${left}%" onclick="showFullProfile(${pi})">${person.init}</div>`;
+  });
+  grid.innerHTML+=`<div class="col"><div class="up-badge" style="background:${drive.color}">&#8593; ${drive.useWord}</div><div class="up-desc">${drive.useDesc}</div><div class="track" style="border-color:${drive.color}"><div class="zone-70-strip" style="background:${drive.bg}"></div><div class="zone-70-label" style="color:${drive.color}">70</div><div class="zone-divider" style="border-color:${drive.color}"></div>${inner}</div><div class="drive-name" style="color:${drive.color}">${drive.name}</div><div class="down-badge" style="background:${drive.color}">&#8595; ${drive.avoidWord}</div><div class="down-desc">${drive.avoidDesc}</div></div>`;
+});
+
+const legend=document.getElementById('legend');
+TEAM.forEach((p,pi)=>{
+  legend.innerHTML+=`<div class="legend-item"><div class="legend-swatch" style="background:${p.color}"></div><span><span class="legend-name" style="color:${p.color}" onclick="showFullProfile(${pi})">${p.first} ${p.last}</span><span class="legend-id">${p.id}</span></span></div>`;
+});
+</script>
+</body>
+</html>
