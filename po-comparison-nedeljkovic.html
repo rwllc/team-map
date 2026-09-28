@@ -1,4 +1,4 @@
-<title>PO Comparison — With Nedeljkovic</title>
+<title>PO Comparison — With Nedeljko</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;600;700;800&family=Source+Sans+3:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap">
 
@@ -135,7 +135,7 @@
 
   /* Legend / fit chips */
   .legend-bar{
-    display:flex; flew-wrap:wrap; gap:10px; align-items:center;
+    display:flex; flex-wrap:wrap; gap:10px; align-items:center;
     padding:14px 16px; background:var(--surface); border:1px solid var(--hairline); border-radius:12px; box-shadow:var(--shadow);
   }
   .legend-label{font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.07em; color:var(--ink-muted); margin-right:2px;}
@@ -384,3 +384,284 @@
       { name:"Mike Strouss", series:"var(--series-8)", scores:{ei:4, dec:8, adh:8, sb:3, ra:9, sd:8}, interview:{} }
     ]
   };
+
+  const ICONS = {
+    heart: '<svg viewBox="0 0 24 24"><path d="M12 21C12 21 4 15.4 4 9.4C4 6.4 6.3 4.2 9 4.2C10.5 4.2 11.6 4.9 12 5.7C12.4 4.9 13.5 4.2 15 4.2C17.7 4.2 20 6.4 20 9.4C20 15.4 12 21 12 21Z"/></svg>',
+    hand: '<svg viewBox="0 0 24 24"><rect x="6" y="11" width="12" height="9" rx="4"/><rect x="7.2" y="2.4" width="2.6" height="10.2" rx="1.3"/><rect x="10.5" y="1" width="2.6" height="11.6" rx="1.3"/><rect x="13.8" y="1.7" width="2.6" height="10.8" rx="1.3"/><rect x="17" y="3.8" width="2.3" height="8.6" rx="1.15"/><rect x="2.6" y="12.4" width="2.4" height="7.6" rx="1.2" transform="rotate(-32 3.8 16.2)"/></svg>',
+    head: '<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M4 21c0-4.4 3.6-7.5 8-7.5s8 3.1 8 7.5"/></svg>'
+  };
+
+  const MIN = 1, MAX = 9, GUTTER = 14;
+  // Inset the 1-9 domain by a fixed pixel gutter on each side so marks at the
+  // extremes (score 1 or 9) never sit flush against the track edge and clip.
+  const pos = v => {
+    const frac = (v - MIN) / (MAX - MIN);
+    return `calc(${GUTTER}px + (100% - ${GUTTER * 2}px) * ${frac})`;
+  };
+
+  function fitStatus(score, [lo, hi]){
+    if (score < lo) return { inRange:false, text:"Below benchmark range &mdash; underuse (blind spot)" };
+    if (score > hi) return { inRange:false, text:"Above benchmark range &mdash; overuse (preference)" };
+    return { inRange:true, text:"Within benchmark range" };
+  }
+
+  function lightFor(misses){
+    if (misses === 0) return "green";
+    if (misses <= 2) return "yellow";
+    return "red";
+  }
+
+  const allMetrics = DATA.groups.flatMap(g => g.metrics);
+
+  // Legend
+  const legend = document.getElementById("legend");
+  let legendHtml = '<span class="legend-label">Candidates</span>';
+  DATA.candidates.forEach(c => {
+    const misses = allMetrics.filter(m => !fitStatus(c.scores[m.key], m.benchmark).inRange).length;
+    const light = lightFor(misses);
+    const missText = misses === 0 ? "All 6 facets within range" : `${misses} of 6 facets outside range`;
+    legendHtml += `<span class="chip">
+      <span class="dot" style="background:${c.series}"></span>
+      <span class="name">${c.name}</span>
+      <span class="signal" role="img" aria-label="${light} signal &mdash; ${missText}">
+        <i class="${light === 'red' ? 'lit-red' : ''}"></i>
+        <i class="${light === 'yellow' ? 'lit-yellow' : ''}"></i>
+        <i class="${light === 'green' ? 'lit-green' : ''}"></i>
+      </span>
+      <span class="fit">${missText}</span>
+    </span>`;
+  });
+  legendHtml += `<span class="chip benchmark"><span class="swatch"></span><span class="fit">Benchmark range &mdash; ${DATA.role}</span></span>`;
+  legend.innerHTML = legendHtml;
+
+  // Balanced marker (exact position over 6, with directional arrows)
+  const balancedPos = pos(6);
+  document.getElementById("balanceMarker").innerHTML = `
+    <span class="arrow-side left" style="--balanced-pct:${balancedPos}">Underuse (Blind Spot) <span class="glyph">&larr;</span></span>
+    <span class="label-balanced" style="--balanced-pct:${balancedPos}">Balanced</span>
+    <span class="arrow-side right" style="--balanced-pct:${balancedPos}"><span class="glyph">&rarr;</span> Overuse (Preference)</span>`;
+
+  // Chart
+  const chart = document.getElementById("chart");
+  const tooltip = document.getElementById("tooltip");
+  const laneH = 24;
+
+  DATA.groups.forEach(group => {
+    const groupEl = document.createElement("div");
+    groupEl.className = "group";
+
+    const header = document.createElement("div");
+    header.className = "group-header";
+    header.innerHTML = `<div class="label-col"><h2>${group.title}</h2><p>${group.desc}</p></div><div class="track"></div>`;
+    groupEl.appendChild(header);
+
+    group.metrics.forEach(metric => {
+      const row = document.createElement("div");
+      row.className = "metric-row";
+
+      const trackHeight = DATA.candidates.length * laneH;
+      const lo = pos(metric.benchmark[0]), hi = pos(metric.benchmark[1]);
+      const balancedLeft = pos(6);
+
+      let dotsHtml = "";
+      DATA.candidates.forEach((c, i) => {
+        const score = c.scores[metric.key];
+        const left = pos(score);
+        const top = i * laneH + laneH / 2;
+        const status = fitStatus(score, metric.benchmark);
+        const side = score >= 7.5 ? "side-left" : "side-right";
+        dotsHtml += `<button type="button" class="dot-btn"
+            style="left:${left}; top:${top}px; background:${c.series};"
+            data-name="${c.name}" data-metric="${metric.label.replace(/&amp;/g,'&')}"
+            data-score="${score}" data-fit="${status.text}" data-inrange="${status.inRange}"
+            aria-label="${c.name}, ${metric.label.replace(/&amp;/g,'&')}: ${score}, ${status.text}"></button>
+          <span class="score-label ${side}" style="left:${left}; top:${top}px; color:${c.series}">${score}</span>`;
+      });
+
+      row.innerHTML = `
+        <div class="label-col row-label">
+          <div class="row-icon">${ICONS[metric.icon]}</div>
+          <div class="row-text"><b>${metric.label}</b><span>${metric.sub}</span></div>
+        </div>
+        <div class="track">
+          <div class="track-plot" style="height:${trackHeight}px;">
+            <div class="band" style="left:${lo}; width:calc(${hi} - ${lo});"></div>
+            <div class="balanced-line" style="left:${balancedLeft};"></div>
+            ${dotsHtml}
+          </div>
+        </div>`;
+      groupEl.appendChild(row);
+    });
+
+    chart.appendChild(groupEl);
+  });
+
+  // Tick row (inserted once, above first group, aligned to same columns)
+  const ticks = document.createElement("div");
+  ticks.className = "metric-row";
+  ticks.style.padding = "0 0 6px";
+  ticks.style.borderTop = "none";
+  let tickNums = "";
+  for (let n = MIN; n <= MAX; n++) tickNums += `<span style="left:${pos(n)}">${n}</span>`;
+  ticks.innerHTML = `<div class="label-col"></div><div class="track"><div class="track-ticks">${tickNums}</div></div>`;
+  chart.insertBefore(ticks, chart.firstChild);
+
+  // Tooltip interactions
+  function showTip(btn){
+    const inRange = btn.dataset.inrange === "true";
+    tooltip.innerHTML = `<b>${btn.dataset.name}</b>${btn.dataset.metric}: <span style="font-family:'IBM Plex Mono',monospace">${btn.dataset.score}</span>
+      <div class="fit-line ${inRange ? 'in':'out'}">${btn.dataset.fit}</div>`;
+    const r = btn.getBoundingClientRect();
+    tooltip.style.left = Math.min(window.innerWidth - 236, Math.max(8, r.left + r.width/2 - 110)) + "px";
+    tooltip.style.top = (r.top - 10) + "px";
+    tooltip.style.transform = "translateY(-100%)";
+    tooltip.classList.add("show");
+  }
+  function hideTip(){ tooltip.classList.remove("show"); }
+
+  chart.addEventListener("mouseover", e => { const b = e.target.closest(".dot-btn"); if (b) showTip(b); });
+  chart.addEventListener("mouseout", e => { const b = e.target.closest(".dot-btn"); if (b) hideTip(); });
+  chart.addEventListener("focusin", e => { const b = e.target.closest(".dot-btn"); if (b) showTip(b); });
+  chart.addEventListener("focusout", e => { const b = e.target.closest(".dot-btn"); if (b) hideTip(); });
+
+  // ----------------------------------------------------------------------
+  // Page 2+: one interpretation page per candidate, explaining what each
+  // facet score actually means. This lookup is generic to the Hartman model
+  // (not role-specific) so it works unchanged for any role or candidate —
+  // only the benchmark range (already in DATA) decides in/out-of-range color.
+  // ----------------------------------------------------------------------
+  const BANDS = {
+    ei: [
+      {min:9, max:10, text:"Over-attentive to others' uniqueness — may over-trust; strong relationship builder, needs a people-helping role."},
+      {min:7, max:8,  text:"Naturally aware of others' uniqueness; loves relationship-building roles with people interaction."},
+      {min:6, max:6,  text:"Extremely accurate at reading and evaluating people; less relationship-driven than higher scores."},
+      {min:4, max:5,  text:"Direct and blunt, especially under stress; sees some uniqueness in people but doesn't gravitate to relationship-building."},
+      {min:0, max:3,  text:"Very direct and blunt; doesn't see uniqueness in people or gravitate toward relationship-building."}
+    ],
+    dec: [
+      {min:9, max:10, text:"Excessively focused on practical and political angles; high energy and impatience — may struggle with detail-heavy roles."},
+      {min:7, max:8,  text:"Energized by results; attentive to practical and political dynamics; impatient, high energy."},
+      {min:6, max:6,  text:"Highly adept at practical and political dynamics; energized by tangible results."},
+      {min:4, max:5,  text:"Cautious about action, decisions, and change when unfamiliar; prefers to plan and think long-term."},
+      {min:0, max:3,  text:"May struggle to act or decide in unfamiliar situations; prefers research and planning, dislikes being rushed."}
+    ],
+    adh: [
+      {min:9, max:10, text:"May be overly focused on rules and policy — can be dogmatic and inflexible."},
+      {min:7, max:8,  text:"Values rules, order, and plans; has their own ideas but is usually open to new ones."},
+      {min:6, max:6,  text:"Very clear on the value of structure and rules; open and receptive to new ideas."},
+      {min:4, max:5,  text:"Mildly resistant to imposed rules; wants to express individuality."},
+      {min:0, max:3,  text:"May be rebellious toward imposed rules and absolutes; strong need for individuality."}
+    ],
+    sb: [
+      {min:6, max:10, text:"Strong sense of inner worth — courageous, confident, resilient, thick-skinned; may want to lead or be in the inner circle."},
+      {min:4, max:5,  text:"Feels rejection or correction but isn't derailed by it; good level of courage."},
+      {min:0, max:3,  text:"Hard on themselves; can be very sensitive or defensive under criticism."}
+    ],
+    ra: [
+      {min:9, max:10, text:"Loves recognition, highly confident and competitive, has to win — may overvalue own abilities."},
+      {min:7, max:8,  text:"Confident and competitive; likes to win and be recognized; initiates action, high energy."},
+      {min:6, max:6,  text:"Precisely self-aware of strengths and weaknesses; confident, competitive, likes to win."},
+      {min:4, max:5,  text:"Team-oriented, lower ego; may be under-confident under stress and shy away from initiating or negotiating."},
+      {min:0, max:3,  text:"Team-oriented, lower ego; may be extremely under-confident and struggle with self-promotion."}
+    ],
+    sd: [
+      {min:9, max:10, text:"Internally driven, goal-oriented, persistent — may be excessive about fulfilling commitments."},
+      {min:7, max:8,  text:"Accurate self-concept; attentive to fulfilling responsibilities and commitments."},
+      {min:6, max:6,  text:"Thinks accurately and optimistically about future direction; consistent."},
+      {min:4, max:5,  text:"Somewhat uncertain about future direction or under stress; initiative may swing."},
+      {min:0, max:3,  text:"May be confused about direction or under major stress; may lack initiative and drive."}
+    ]
+  };
+
+  function bandText(key, score){
+    const b = (BANDS[key] || []).find(b => score >= b.min && score <= b.max);
+    return b ? b.text : "Interpretation not available for this score.";
+  }
+
+  function candidateChip(c){
+    const misses = allMetrics.filter(m => !fitStatus(c.scores[m.key], m.benchmark).inRange).length;
+    const light = lightFor(misses);
+    const missText = misses === 0 ? "All 6 facets within range" : `${misses} of 6 facets outside range`;
+    return `<span class="chip">
+      <span class="dot" style="background:${c.series}"></span>
+      <span class="name">${c.name}</span>
+      <span class="signal" role="img" aria-label="${light} signal &mdash; ${missText}">
+        <i class="${light === 'red' ? 'lit-red' : ''}"></i>
+        <i class="${light === 'yellow' ? 'lit-yellow' : ''}"></i>
+        <i class="${light === 'green' ? 'lit-green' : ''}"></i>
+      </span>
+      <span class="fit">${missText}</span>
+    </span>`;
+  }
+
+  function drilldown(metric, c){
+    const iv = c.interview && c.interview[metric.key];
+    if (!iv) return "";
+    const q = iv.questions.map(t => `<li>${t}</li>`).join("");
+    const l = iv.lookFor.map(t => `<li>${t}</li>`).join("");
+    return `
+      <div class="drilldown">
+        <div class="drilldown-label">Behavioral interview &mdash; probe this</div>
+        <ol class="ask-list">${q}</ol>
+        <div class="lookfor-block">
+          <div class="lookfor-label">What to look for in their answers</div>
+          <ul class="lookfor-list">${l}</ul>
+        </div>
+      </div>`;
+  }
+
+  function interpRow(metric, c){
+    const score = c.scores[metric.key];
+    const status = fitStatus(score, metric.benchmark);
+    const cls = status.inRange ? "in" : "out";
+    return `
+      <div class="metric-row interp-row">
+        <div class="label-col row-label">
+          <div class="row-icon">${ICONS[metric.icon]}</div>
+          <div class="row-text"><b>${metric.label}</b><span>${metric.sub}</span></div>
+        </div>
+        <div class="interp-body">
+          <span class="interp-score ${cls}">${score}</span>
+          <span class="interp-sentence">${bandText(metric.key, score)}</span>
+        </div>
+      </div>
+      ${(!status.inRange && DATA.mode !== "team") ? drilldown(metric, c) : ""}`;
+  }
+
+  function buildPage2(c, pageNum, totalPages){
+    const el = document.createElement("div");
+    el.className = "page page-2";
+    const groupsHtml = DATA.groups.map(group => `
+      <div class="group">
+        <div class="group-header"><div class="label-col"><h2>${group.title}</h2><p>${group.desc}</p></div></div>
+        ${group.metrics.map(m => interpRow(m, c)).join("")}
+      </div>`).join("");
+    const isTeam = DATA.mode === "team";
+    const eyebrowSuffix = isTeam ? "Interpretation" : "Interpretation &amp; Now What";
+    const subtitleText = isTeam
+      ? `A plain-language read of each Hartman facet for ${DATA.role}.`
+      : `A plain-language read of each Hartman facet for ${DATA.role}. Facets outside the benchmark range include a behavioral interview drill-down to explore further.`;
+    const footerText = isTeam
+      ? `<b>How to read this:</b> the number badge is colored the same way as the chart on page 1 &mdash; green means within the desired range for ${DATA.role}, red means outside it (underuse/blind spot below range, overuse/preference above it). This is a team benchmarking view for current employees, not a hiring comparison, so no interview drill-down is included. Use this alongside experience, skills, and other qualifications &mdash; it is a decision-support tool, not a standalone evaluation.`
+      : `<b>How to read this:</b> the number badge is colored the same way as the chart on page 1 &mdash; green means within the desired range for ${DATA.role}, red means outside it (underuse/blind spot below range, overuse/preference above it). Red facets carry an indented drill-down: interview questions to ask, then &mdash; nested one level deeper &mdash; what to listen for in the response. Use this alongside experience, skills, and other qualifications &mdash; it is a decision-support tool, not a standalone hiring decision.`;
+
+    el.innerHTML = `
+      <div class="masthead">
+        <div class="eyebrow">Page ${pageNum} of ${totalPages} &middot; ${eyebrowSuffix}</div>
+        <h1>${c.name} &mdash; What These Scores Mean</h1>
+        <p class="subtitle">${subtitleText}</p>
+      </div>
+      <div class="legend-bar">${candidateChip(c)}</div>
+      <div class="chart-card">${groupsHtml}</div>
+      <footer class="note">
+        ${footerText}
+      </footer>`;
+    return el;
+  }
+
+  const totalPages = 1 + DATA.candidates.length;
+  DATA.candidates.forEach((c, i) => {
+    document.body.appendChild(buildPage2(c, 2 + i, totalPages));
+  });
+})();
+</script>
