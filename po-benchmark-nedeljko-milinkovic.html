@@ -1,0 +1,660 @@
+<title>Product Owner Benchmark — Nedeljko Milinkovic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;600;700;800&family=Source+Sans+3:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap">
+
+<div class="tooltip" id="tooltip" role="tooltip"></div>
+
+<style>
+  :root{
+    color-scheme: light;
+    --page:#f6f4ef;
+    --surface:#ffffff;
+    --surface-2:#fbfaf6;
+    --ink:#12181a;
+    --ink-secondary:#4c5650;
+    --ink-muted:#7e8883;
+    --hairline:#dee1d9;
+    --hairline-strong:#c7ccc2;
+    --accent:#0f4c4c;
+    --accent-soft:#e3efee;
+    --band-fill: rgba(18,24,26,0.055);
+    --band-border: rgba(18,24,26,0.24);
+    --balanced-line: #4d5a54;
+    --series-1:#2a78d6;
+    --series-2:#eb6834;
+    --series-3:#1baf7a;
+    --series-4:#eda100;
+    --series-5:#e87ba4;
+    --series-6:#008300;
+    --series-7:#4a3aa7;
+    --series-8:#e34948;
+    --good:#0ca30c;
+    --warn:#fab219;
+    --critical:#d03b3b;
+    --shadow: 0 1px 2px rgba(18,24,26,0.06), 0 10px 28px -14px rgba(18,24,26,0.22);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      color-scheme: dark;
+      --page:#0c1011;
+      --surface:#151b1d;
+      --surface-2:#1a2123;
+      --ink:#f2f4f2;
+      --ink-secondary:#b7c0bb;
+      --ink-muted:#818b86;
+      --hairline:#2a3234;
+      --hairline-strong:#37413f;
+      --accent:#5cc2b9;
+      --accent-soft: rgba(92,194,185,0.14);
+      --band-fill: rgba(255,255,255,0.07);
+      --band-border: rgba(255,255,255,0.26);
+      --balanced-line:#aab5b0;
+      --series-1:#3987e5;
+      --series-2:#d95926;
+      --series-3:#199e70;
+      --series-4:#c98500;
+      --series-5:#d55181;
+      --series-6:#199e5c;
+      --series-7:#7a68c9;
+      --series-8:#e2645f;
+      --good:#0ca30c;
+      --warn:#fab219;
+      --critical:#d03b3b;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 10px 28px -14px rgba(0,0,0,0.65);
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --page:#0c1011;
+    --surface:#151b1d;
+    --surface-2:#1a2123;
+    --ink:#f2f4f2;
+    --ink-secondary:#b7c0bb;
+    --ink-muted:#818b86;
+    --hairline:#2a3234;
+    --hairline-strong:#37413f;
+    --accent:#5cc2b9;
+    --accent-soft: rgba(92,194,185,0.14);
+    --band-fill: rgba(255,255,255,0.07);
+    --band-border: rgba(255,255,255,0.26);
+    --balanced-line:#aab5b0;
+    --series-1:#3987e5;
+    --series-2:#d95926;
+    --series-3:#199e70;
+    --series-6:#199e5c;
+    --series-7:#7a68c9;
+    --series-8:#e2645f;
+    --good:#0ca30c;
+    --warn:#fab219;
+    --critical:#d03b3b;
+    --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 10px 28px -14px rgba(0,0,0,0.65);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    background:var(--page);
+    color:var(--ink);
+    font-family:"Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
+    -webkit-font-smoothing:antialiased;
+    padding: 40px 20px 64px;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  .page{max-width:980px; margin:0 auto 40px; display:flex; flex-direction:column; gap:22px;}
+  .page-2{padding-top:32px; border-top:2px solid var(--hairline);}
+
+  @media print{
+    body{padding:0;}
+    .page{margin-bottom:0;}
+    .page:not(:last-child){break-after:page;}
+    .page-2{border-top:none; padding-top:0;}
+    .tooltip{display:none !important;}
+  }
+
+  /* Header */
+  .masthead{display:flex; flex-direction:column; gap:10px;}
+  .eyebrow{
+    font-family:"Source Sans 3", sans-serif; font-weight:600; font-size:12.5px;
+    letter-spacing:0.09em; text-transform:uppercase; color:var(--accent);
+  }
+  h1{
+    font-family:"Libre Franklin", sans-serif; font-weight:800; font-size:clamp(26px,3.4vw,34px);
+    line-height:1.15; margin:0; text-wrap:balance; letter-spacing:-0.01em;
+  }
+  .subtitle{color:var(--ink-secondary); font-size:16px; line-height:1.5; max-width:64ch; margin:0;}
+
+  /* How-to-read strip */
+  .primer{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
+    background:var(--hairline); border:1px solid var(--hairline); border-radius:12px; overflow:hidden;
+  }
+  .primer-cell{background:var(--surface-2); padding:14px 16px; display:flex; gap:10px; align-items:flex-start;}
+  .primer-icon{flex:0 0 auto; width:32px; height:32px; color:var(--accent);}
+  .primer-icon svg{width:100%; height:100%; fill:currentColor;}
+  .primer-text b{display:block; font-family:"Libre Franklin",sans-serif; font-weight:700; font-size:13.5px;}
+  .primer-text span{display:block; color:var(--ink-secondary); font-size:12.5px; line-height:1.4; margin-top:2px;}
+
+  /* Legend / fit chips */
+  .legend-bar{
+    display:flex; flex-wrap:wrap; gap:10px; align-items:center;
+    padding:14px 16px; background:var(--surface); border:1px solid var(--hairline); border-radius:12px; box-shadow:var(--shadow);
+  }
+  .legend-label{font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.07em; color:var(--ink-muted); margin-right:2px;}
+  .chip{
+    display:flex; align-items:center; gap:8px; padding:6px 10px 6px 8px;
+    border:1px solid var(--hairline-strong); border-radius:999px; background:var(--surface-2);
+  }
+  .chip .dot{width:10px; height:10px; border-radius:50%; flex:0 0 auto;}
+  .chip .name{font-weight:600; font-size:13.5px;}
+  .chip .fit{font-size:12px; color:var(--ink-secondary);}
+  .chip .fit b{font-family:"IBM Plex Mono", monospace; font-weight:600; color:var(--ink);}
+  .chip.benchmark{background:transparent;}
+
+  /* Traffic-light fit signal */
+  .signal{
+    display:flex; flex-direction:column; gap:2.5px; padding:3px;
+    background:#ffffff; border-radius:5px; border:1.5px solid #111111; flex:0 0 auto;
+    box-shadow:0 1px 2px rgba(11,11,11,0.08);
+  }
+  .signal i{
+    width:8px; height:8px; border-radius:50%; display:block;
+    background:rgba(11,11,11,0.10); border:1px solid rgba(11,11,11,0.12);
+  }
+  .signal i.lit-red{ background:var(--critical); border-color:var(--critical); box-shadow:0 0 5px 1px color-mix(in srgb, var(--critical) 70%, transparent); }
+  .signal i.lit-yellow{ background:var(--warn); border-color:var(--warn); box-shadow:0 0 5px 1px color-mix(in srgb, var(--warn) 70%, transparent); }
+  .signal i.lit-green{ background:var(--good); border-color:var(--good); box-shadow:0 0 5px 1px color-mix(in srgb, var(--good) 70%, transparent); }
+  .chip.benchmark .swatch{
+    width:22px; height:10px; border-radius:3px;
+    background:var(--band-fill); border:1.5px dashed var(--band-border);
+  }
+
+  /* Chart card */
+  .chart-card{
+    background:var(--surface); border:1px solid var(--hairline); border-radius:14px;
+    padding:22px 24px 18px; box-shadow:var(--shadow);
+  }
+  .chart-scroll{overflow-x:auto;}
+  .chart-inner{min-width:560px;}
+
+  .label-col{flex:0 0 232px;}
+
+  .axis-header{display:flex; gap:20px; align-items:flex-end; padding-bottom:10px; margin-bottom:6px; border-bottom:1px solid var(--hairline);}
+  .balance-marker{flex:1; position:relative; height:20px;}
+  .balance-marker .label-balanced{
+    position:absolute; top:0; left:var(--balanced-pct); transform:translateX(-50%);
+    width:104px; text-align:center;
+    font-family:"Libre Franklin",sans-serif; font-weight:800; font-size:12.5px;
+    letter-spacing:0.03em; text-transform:uppercase; color:var(--ink);
+    white-space:nowrap;
+  }
+  .balance-marker .arrow-side{
+    position:absolute; top:0; display:flex; align-items:center; gap:5px;
+    font-family:"Libre Franklin",sans-serif; font-weight:700; font-size:11px;
+    letter-spacing:0.05em; text-transform:uppercase; color:var(--ink-muted); white-space:nowrap;
+  }
+  /* offset clears half the 104px balanced label (52px) plus a 10px gap */
+  .balance-marker .arrow-side.left{ right:calc(100% - var(--balanced-pct) + 62px); }
+  .balance-marker .arrow-side.right{ left:calc(var(--balanced-pct) + 62px); }
+  .balance-marker .arrow-side .glyph{color:var(--balanced-line); font-weight:700;}
+
+  .group{margin-top:6px;}
+  .group-header{display:flex; gap:20px; align-items:baseline; padding:14px 0 6px;}
+  .group-header .label-col{}
+  .group-header h2{
+    font-family:"Libre Franklin",sans-serif; font-size:15px; font-weight:700; margin:0;
+    color:var(--accent);
+  }
+  .group-header p{margin:2px 0 0; font-size:12.5px; color:var(--ink-muted);}
+  .group + .group{border-top:1px solid var(--hairline); padding-top:2px;}
+
+  .metric-row{display:flex; gap:20px; align-items:center; padding:10px 0;}
+  .metric-row + .metric-row{border-top:1px dashed var(--hairline);}
+  .row-label{display:flex; gap:10px; align-items:flex-start;}
+  .row-icon{
+    flex:0 0 auto; width:42px; height:42px; border-radius:11px; background:var(--surface-2);
+    border:1px solid var(--hairline); display:flex; align-items:center; justify-content:center;
+    color:var(--accent);
+  }
+  .row-icon svg{width:25px; height:25px; fill:currentColor;}
+  .row-text b{display:block; font-size:13.5px; font-weight:600; line-height:1.25;}
+  .row-text span{display:block; font-size:11.5px; color:var(--ink-muted); margin-top:1px;}
+
+  .track{flex:1; position:relative;}
+  .track-ticks{position:relative; height:14px; font-family:"IBM Plex Mono",monospace; font-size:10px; color:var(--ink-muted); margin-bottom:2px;}
+  .track-ticks span{position:absolute; top:0; transform:translateX(-50%);}
+  .track-plot{position:relative; border-top:1px solid var(--hairline); border-bottom:1px solid var(--hairline);}
+
+  .band{position:absolute; top:0; bottom:0; background:var(--band-fill); border-left:1.5px dashed var(--band-border); border-right:1.5px dashed var(--band-border);}
+  .balanced-line{position:absolute; top:0; bottom:0; width:2px; background:var(--balanced-line); opacity:0.6;}
+
+  .dot-btn{
+    position:absolute; transform:translate(-50%,-50%); width:12px; height:12px; border-radius:50%;
+    border:2px solid var(--surface); box-shadow:0 0 0 1px var(--hairline-strong);
+    padding:0; cursor:pointer;
+  }
+  .dot-btn:focus-visible{outline:2px solid var(--accent); outline-offset:3px;}
+  .score-label{
+    position:absolute; transform:translateY(-50%); top:50%;
+    font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:11.5px; color:var(--ink);
+    background:var(--surface); padding:0 3px; pointer-events:none;
+  }
+  .score-label.side-right{margin-left:9px;}
+  .score-label.side-left{margin-left:-9px; transform:translate(-100%,-50%);}
+
+  .axis-caption{margin-top:14px; font-size:12px; color:var(--ink-muted); text-align:center;}
+
+  /* Page 2 — interpretation rows */
+  .interp-row{align-items:flex-start;}
+  .interp-body{flex:1; display:flex; align-items:flex-start; gap:12px; padding-top:2px;}
+  .interp-score{
+    flex:0 0 auto; font-family:"IBM Plex Mono",monospace; font-weight:700; font-size:14px;
+    padding:3px 10px; border-radius:7px; line-height:1.4;
+  }
+  .interp-score.in{ color:#0b6b0b; background:rgba(12,163,12,0.16); }
+  .interp-score.out{ color:#9c2b2b; background:rgba(208,59,59,0.16); }
+  .interp-sentence{font-size:13.5px; line-height:1.55; color:var(--ink-secondary);}
+
+  /* Behavioral interview drill-down, nested under an out-of-range facet row */
+  .drilldown{
+    margin:2px 0 16px 62px; padding:14px 18px;
+    background:rgba(208,59,59,0.05); border-left:3px solid rgba(208,59,59,0.45);
+    border-radius:0 10px 10px 0;
+  }
+  .drilldown-label{
+    font-family:"Libre Franklin",sans-serif; font-weight:700; font-size:11.5px;
+    letter-spacing:0.05em; text-transform:uppercase; color:#9c2b2b; margin-bottom:10px;
+  }
+  .ask-list{list-style:decimal; padding-left:19px; margin:0; display:flex; flex-direction:column; gap:9px;}
+  .ask-list li{font-size:13.5px; line-height:1.5; color:var(--ink-secondary); padding-left:2px;}
+  .ask-list li::marker{font-weight:700; color:var(--accent);}
+  .lookfor-block{margin:12px 0 0 20px; padding-top:11px; border-top:1px dashed var(--hairline-strong);}
+  .lookfor-label{
+    font-family:"Libre Franklin",sans-serif; font-weight:700; font-size:11px;
+    letter-spacing:0.05em; text-transform:uppercase; color:var(--ink-muted); margin-bottom:8px;
+  }
+  .lookfor-list{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:9px;}
+  .lookfor-list li{font-size:13.5px; line-height:1.5; color:var(--ink-secondary); padding-left:18px; position:relative;}
+  .lookfor-list li::before{content:"\2192"; position:absolute; left:0; color:var(--accent); font-weight:700;}
+  @media (max-width:700px){ .drilldown{margin-left:0;} }
+
+  footer.note{
+    font-size:12px; color:var(--ink-muted); line-height:1.6; padding:14px 16px;
+    background:var(--surface-2); border:1px solid var(--hairline); border-radius:12px;
+  }
+  footer.note b{color:var(--ink-secondary);}
+
+  .tooltip{
+    position:fixed; z-index:20; pointer-events:none; opacity:0; transition:opacity .12s ease;
+    background:var(--ink); color:var(--page); border-radius:8px; padding:8px 10px;
+    font-size:12px; line-height:1.4; max-width:220px; box-shadow:0 8px 20px rgba(0,0,0,0.25);
+  }
+  .tooltip.show{opacity:1;}
+  .tooltip b{display:block; font-family:"Libre Franklin",sans-serif; font-size:12.5px; margin-bottom:2px;}
+  .tooltip .fit-line{margin-top:3px; font-weight:600;}
+  .tooltip .fit-line.in{color:#7fe07f;}
+  .tooltip .fit-line.out{color:#f2a5a5;}
+
+  @media (prefers-reduced-motion: reduce){
+    .tooltip{transition:none;}
+  }
+
+  @media (max-width: 640px){
+    .primer{grid-template-columns:1fr;}
+    .label-col{flex-basis:160px;}
+  }
+</style>
+
+<div class="page">
+
+  <div class="masthead">
+    <div class="eyebrow">Hartman Value Profile &middot; Thinking Style</div>
+    <h1>Product Owner Benchmark &mdash; Nedeljko Milinkovic</h1>
+    <p class="subtitle">How Nedeljko Milinkovic sizes up against the desired scoring range for Product Owner across the six Hartman thinking dimensions.</p>
+    <p class="subtitle" style="font-size:13px; font-weight:600; color:var(--accent);">Individual benchmark view &mdash; no comparison roster</p>
+  </div>
+
+  <div class="primer">
+    <div class="primer-cell">
+      <div class="primer-icon"><svg viewBox="0 0 24 24"><path d="M12 21C12 21 4 15.4 4 9.4C4 6.4 6.3 4.2 9 4.2C10.5 4.2 11.6 4.9 12 5.7C12.4 4.9 13.5 4.2 15 4.2C17.7 4.2 20 6.4 20 9.4C20 15.4 12 21 12 21Z"/></svg></div>
+      <div class="primer-text"><b>Heart &middot; Feeling</b><span>Intrinsic value &mdash; empathy, belief, what matters emotionally.</span></div>
+    </div>
+    <div class="primer-cell">
+      <div class="primer-icon"><svg viewBox="0 0 24 24"><rect x="6" y="11" width="12" height="9" rx="4"/><rect x="7.2" y="2.4" width="2.6" height="10.2" rx="1.3"/><rect x="10.5" y="1" width="2.6" height="11.6" rx="1.3"/><rect x="13.8" y="1.7" width="2.6" height="10.8" rx="1.3"/><rect x="17" y="3.8" width="2.3" height="8.6" rx="1.15"/><rect x="2.6" y="12.4" width="2.4" height="7.6" rx="1.2" transform="rotate(-32 3.8 16.2)"/></svg></div>
+      <div class="primer-text"><b>Hand &middot; Doing</b><span>Extrinsic value &mdash; decisiveness, results, action taken.</span></div>
+    </div>
+    <div class="primer-cell">
+      <div class="primer-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M4 21c0-4.4 3.6-7.5 8-7.5s8 3.1 8 7.5"/></svg></div>
+      <div class="primer-text"><b>Head &middot; Thinking</b><span>Systemic value &mdash; structure, order, adherence to rules.</span></div>
+    </div>
+  </div>
+
+  <div class="legend-bar" id="legend"></div>
+
+  <div class="chart-card">
+    <div class="chart-scroll"><div class="chart-inner">
+
+      <div class="axis-header">
+        <div class="label-col"></div>
+        <div class="balance-marker" id="balanceMarker"></div>
+      </div>
+
+      <div id="chart"></div>
+
+      <div class="axis-caption">Scale runs 1&ndash;9. 6 is the clearest, most balanced thinking &mdash; below is underuse (blind spot), above is overuse (preference).</div>
+
+    </div></div>
+  </div>
+
+  <footer class="note">
+    <b>How to read this:</b> the shaded band behind each row is the desired scoring range for the Product Owner benchmark; a dot inside the band is within range, a dot outside is underuse (blind spot, left) or overuse (preference, right). The signal light by each name shows how many of the six facets fall outside that range: green = none, yellow = one or two, red = three or more. Use this alongside experience, skills, and other qualifications &mdash; it is a decision-support tool, not a standalone hiring or placement decision.
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  const DATA = {
+    role: "Product Owner",
+    mode: "team", // "team" = evaluating current employees (no interview drill-down); "hiring" = candidate comparison (drill-down enabled)
+    groups: [
+      {
+        key:"world", title:"World View", desc:"How you value other people, ideas, and things around you.",
+        metrics:[
+          {key:"ei", label:"Empathy &amp; Intuition", sub:"Feeling &middot; Intrinsic value", icon:"heart", benchmark:[5,8]},
+          {key:"dec", label:"Results Orientation &amp; Decisiveness", sub:"Doing &middot; Extrinsic value", icon:"hand", benchmark:[4,5]},
+          {key:"adh", label:"Adherence &amp; Organization", sub:"Thinking &middot; Systemic value", icon:"head", benchmark:[7,8]}
+        ]
+      },
+      {
+        key:"self", title:"Self View", desc:"How you value yourself.",
+        metrics:[
+          {key:"sb", label:"Self Belief", sub:"Feeling &middot; Intrinsic value", icon:"heart", benchmark:[4,5]},
+          {key:"ra", label:"Role Awareness", sub:"Doing &middot; Extrinsic value", icon:"hand", benchmark:[4,8]},
+          {key:"sd", label:"Self Direction", sub:"Thinking &middot; Systemic value", icon:"head", benchmark:[7,9]}
+        ]
+      }
+    ],
+    candidates: [
+      { name:"Nedeljko Milinkovic", series:"var(--series-1)", scores:{ei:7, dec:4, adh:7, sb:5, ra:3, sd:8}, interview:{} }
+    ]
+  };
+
+  const ICONS = {
+    heart: '<svg viewBox="0 0 24 24"><path d="M12 21C12 21 4 15.4 4 9.4C4 6.4 6.3 4.2 9 4.2C10.5 4.2 11.6 4.9 12 5.7C12.4 4.9 13.5 4.2 15 4.2C17.7 4.2 20 6.4 20 9.4C20 15.4 12 21 12 21Z"/></svg>',
+    hand: '<svg viewBox="0 0 24 24"><rect x="6" y="11" width="12" height="9" rx="4"/><rect x="7.2" y="2.4" width="2.6" height="10.2" rx="1.3"/><rect x="10.5" y="1" width="2.6" height="11.6" rx="1.3"/><rect x="13.8" y="1.7" width="2.6" height="10.8" rx="1.3"/><rect x="17" y="3.8" width="2.3" height="8.6" rx="1.15"/><rect x="2.6" y="12.4" width="2.4" height="7.6" rx="1.2" transform="rotate(-32 3.8 16.2)"/></svg>',
+    head: '<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M4 21c0-4.4 3.6-7.5 8-7.5s8 3.1 8 7.5"/></svg>'
+  };
+
+  const MIN = 1, MAX = 9, GUTTER = 14;
+  // Inset the 1-9 domain by a fixed pixel gutter on each side so marks at the
+  // extremes (score 1 or 9) never sit flush against the track edge and clip.
+  const pos = v => {
+    const frac = (v - MIN) / (MAX - MIN);
+    return `calc(${GUTTER}px + (100% - ${GUTTER * 2}px) * ${frac})`;
+  };
+
+  function fitStatus(score, [lo, hi]){
+    if (score < lo) return { inRange:false, text:"Below benchmark range &mdash; underuse (blind spot)" };
+    if (score > hi) return { inRange:false, text:"Above benchmark range &mdash; overuse (preference)" };
+    return { inRange:true, text:"Within benchmark range" };
+  }
+
+  function lightFor(misses){
+    if (misses === 0) return "green";
+    if (misses <= 2) return "yellow";
+    return "red";
+  }
+
+  const allMetrics = DATA.groups.flatMap(g => g.metrics);
+
+  // Legend
+  const legend = document.getElementById("legend");
+  let legendHtml = '<span class="legend-label">Team Member</span>';
+  DATA.candidates.forEach(c => {
+    const misses = allMetrics.filter(m => !fitStatus(c.scores[m.key], m.benchmark).inRange).length;
+    const light = lightFor(misses);
+    const missText = misses === 0 ? "All 6 facets within range" : `${misses} of 6 facets outside range`;
+    legendHtml += `<span class="chip">
+      <span class="dot" style="background:${c.series}"></span>
+      <span class="name">${c.name}</span>
+      <span class="signal" role="img" aria-label="${light} signal &mdash; ${missText}">
+        <i class="${light === 'red' ? 'lit-red' : ''}"></i>
+        <i class="${light === 'yellow' ? 'lit-yellow' : ''}"></i>
+        <i class="${light === 'green' ? 'lit-green' : ''}"></i>
+      </span>
+      <span class="fit">${missText}</span>
+    </span>`;
+  });
+  legendHtml += `<span class="chip benchmark"><span class="swatch"></span><span class="fit">Benchmark range &mdash; ${DATA.role}</span></span>`;
+  legend.innerHTML = legendHtml;
+
+  // Balanced marker (exact position over 6, with directional arrows)
+  const balancedPos = pos(6);
+  document.getElementById("balanceMarker").innerHTML = `
+    <span class="arrow-side left" style="--balanced-pct:${balancedPos}">Underuse (Blind Spot) <span class="glyph">&larr;</span></span>
+    <span class="label-balanced" style="--balanced-pct:${balancedPos}">Balanced</span>
+    <span class="arrow-side right" style="--balanced-pct:${balancedPos}"><span class="glyph">&rarr;</span> Overuse (Preference)</span>`;
+
+  // Chart
+  const chart = document.getElementById("chart");
+  const tooltip = document.getElementById("tooltip");
+  const laneH = 24;
+
+  DATA.groups.forEach(group => {
+    const groupEl = document.createElement("div");
+    groupEl.className = "group";
+
+    const header = document.createElement("div");
+    header.className = "group-header";
+    header.innerHTML = `<div class="label-col"><h2>${group.title}</h2><p>${group.desc}</p></div><div class="track"></div>`;
+    groupEl.appendChild(header);
+
+    group.metrics.forEach(metric => {
+      const row = document.createElement("div");
+      row.className = "metric-row";
+
+      const trackHeight = DATA.candidates.length * laneH;
+      const lo = pos(metric.benchmark[0]), hi = pos(metric.benchmark[1]);
+      const balancedLeft = pos(6);
+
+      let dotsHtml = "";
+      DATA.candidates.forEach((c, i) => {
+        const score = c.scores[metric.key];
+        const left = pos(score);
+        const top = i * laneH + laneH / 2;
+        const status = fitStatus(score, metric.benchmark);
+        const side = score >= 7.5 ? "side-left" : "side-right";
+        dotsHtml += `<button type="button" class="dot-btn"
+            style="left:${left}; top:${top}px; background:${c.series};"
+            data-name="${c.name}" data-metric="${metric.label.replace(/&amp;/g,'&')}"
+            data-score="${score}" data-fit="${status.text}" data-inrange="${status.inRange}"
+            aria-label="${c.name}, ${metric.label.replace(/&amp;/g,'&')}: ${score}, ${status.text}"></button>
+          <span class="score-label ${side}" style="left:${left}; top:${top}px; color:${c.series}">${score}</span>`;
+      });
+
+      row.innerHTML = `
+        <div class="label-col row-label">
+          <div class="row-icon">${ICONS[metric.icon]}</div>
+          <div class="row-text"><b>${metric.label}</b><span>${metric.sub}</span></div>
+        </div>
+        <div class="track">
+          <div class="track-plot" style="height:${trackHeight}px;">
+            <div class="band" style="left:${lo}; width:calc(${hi} - ${lo});"></div>
+            <div class="balanced-line" style="left:${balancedLeft};"></div>
+            ${dotsHtml}
+          </div>
+        </div>`;
+      groupEl.appendChild(row);
+    });
+
+    chart.appendChild(groupEl);
+  });
+
+  // Tick row (inserted once, above first group, aligned to same columns)
+  const ticks = document.createElement("div");
+  ticks.className = "metric-row";
+  ticks.style.padding = "0 0 6px";
+  ticks.style.borderTop = "none";
+  let tickNums = "";
+  for (let n = MIN; n <= MAX; n++) tickNums += `<span style="left:${pos(n)}">${n}</span>`;
+  ticks.innerHTML = `<div class="label-col"></div><div class="track"><div class="track-ticks">${tickNums}</div></div>`;
+  chart.insertBefore(ticks, chart.firstChild);
+
+  // Tooltip interactions
+  function showTip(btn){
+    const inRange = btn.dataset.inrange === "true";
+    tooltip.innerHTML = `<b>${btn.dataset.name}</b>${btn.dataset.metric}: <span style="font-family:'IBM Plex Mono',monospace">${btn.dataset.score}</span>
+      <div class="fit-line ${inRange ? 'in':'out'}">${btn.dataset.fit}</div>`;
+    const r = btn.getBoundingClientRect();
+    tooltip.style.left = Math.min(window.innerWidth - 236, Math.max(8, r.left + r.width/2 - 110)) + "px";
+    tooltip.style.top = (r.top - 10) + "px";
+    tooltip.style.transform = "translateY(-100%)";
+    tooltip.classList.add("show");
+  }
+  function hideTip(){ tooltip.classList.remove("show"); }
+
+  chart.addEventListener("mouseover", e => { const b = e.target.closest(".dot-btn"); if (b) showTip(b); });
+  chart.addEventListener("mouseout", e => { const b = e.target.closest(".dot-btn"); if (b) hideTip(); });
+  chart.addEventListener("focusin", e => { const b = e.target.closest(".dot-btn"); if (b) showTip(b); });
+  chart.addEventListener("focusout", e => { const b = e.target.closest(".dot-btn"); if (b) hideTip(); });
+
+  // ----------------------------------------------------------------------
+  // Page 2+: one interpretation page per candidate, explaining what each
+  // facet score actually means. This lookup is generic to the Hartman model
+  // (not role-specific) so it works unchanged for any role or candidate —
+  // only the benchmark range (already in DATA) decides in/out-of-range color.
+  // ----------------------------------------------------------------------
+  const BANDS = {
+    ei: [
+      {min:9, max:10, text:"Over-attentive to others' uniqueness — may over-trust; strong relationship builder, needs a people-helping role."},
+      {min:7, max:8,  text:"Naturally aware of others' uniqueness; loves relationship-building roles with people interaction."},
+      {min:6, max:6,  text:"Extremely accurate at reading and evaluating people; less relationship-driven than higher scores."},
+      {min:4, max:5,  text:"Direct and blunt, especially under stress; sees some uniqueness in people but doesn't gravitate to relationship-building."},
+      {min:0, max:3,  text:"Very direct and blunt; doesn't see uniqueness in people or gravitate toward relationship-building."}
+    ],
+    dec: [
+      {min:9, max:10, text:"Excessively focused on practical and political angles; high energy and impatience — may struggle with detail-heavy roles."},
+      {min:7, max:8,  text:"Energized by results; attentive to practical and political dynamics; impatient, high energy."},
+      {min:6, max:6,  text:"Highly adept at practical and political dynamics; energized by tangible results."},
+      {min:4, max:5,  text:"Cautious about action, decisions, and change when unfamiliar; prefers to plan and think long-term."},
+      {min:0, max:3,  text:"May struggle to act or decide in unfamiliar situations; prefers research and planning, dislikes being rushed."}
+    ],
+    adh: [
+      {min:9, max:10, text:"May be overly focused on rules and policy — can be dogmatic and inflexible."},
+      {min:7, max:8,  text:"Values rules, order, and plans; has their own ideas but is usually open to new ones."},
+      {min:6, max:6,  text:"Very clear on the value of structure and rules; open and receptive to new ideas."},
+      {min:4, max:5,  text:"Mildly resistant to imposed rules; wants to express individuality."},
+      {min:0, max:3,  text:"May be rebellious toward imposed rules and absolutes; strong need for individuality."}
+    ],
+    sb: [
+      {min:6, max:10, text:"Strong sense of inner worth — courageous, confident, resilient, thick-skinned; may want to lead or be in the inner circle."},
+      {min:4, max:5,  text:"Feels rejection or correction but isn't derailed by it; good level of courage."},
+      {min:0, max:3,  text:"Hard on themselves; can be very sensitive or defensive under criticism."}
+    ],
+    ra: [
+      {min:9, max:10, text:"Loves recognition, highly confident and competitive, has to win — may overvalue own abilities."},
+      {min:7, max:8,  text:"Confident and competitive; likes to win and be recognized; initiates action, high energy."},
+      {min:6, max:6,  text:"Precisely self-aware of strengths and weaknesses; confident, competitive, likes to win."},
+      {min:4, max:5,  text:"Team-oriented, lower ego; may be under-confident under stress and shy away from initiating or negotiating."},
+      {min:0, max:3,  text:"Team-oriented, lower ego; may be extremely under-confident and struggle with self-promotion."}
+    ],
+    sd: [
+      {min:9, max:10, text:"Internally driven, goal-oriented, persistent — may be excessive about fulfilling commitments."},
+      {min:7, max:8,  text:"Accurate self-concept; attentive to fulfilling responsibilities and commitments."},
+      {min:6, max:6,  text:"Thinks accurately and optimistically about future direction; consistent."},
+      {min:4, max:5,  text:"Somewhat uncertain about future direction or under stress; initiative may swing."},
+      {min:0, max:3,  text:"May be confused about direction or under major stress; may lack initiative and drive."}
+    ]
+  };
+
+  function bandText(key, score){
+    const b = (BANDS[key] || []).find(b => score >= b.min && score <= b.max);
+    return b ? b.text : "Interpretation not available for this score.";
+  }
+
+  function candidateChip(c){
+    const misses = allMetrics.filter(m => !fitStatus(c.scores[m.key], m.benchmark).inRange).length;
+    const light = lightFor(misses);
+    const missText = misses === 0 ? "All 6 facets within range" : `${misses} of 6 facets outside range`;
+    return `<span class="chip">
+      <span class="dot" style="background:${c.series}"></span>
+      <span class="name">${c.name}</span>
+      <span class="signal" role="img" aria-label="${light} signal &mdash; ${missText}">
+        <i class="${light === 'red' ? 'lit-red' : ''}"></i>
+        <i class="${light === 'yellow' ? 'lit-yellow' : ''}"></i>
+        <i class="${light === 'green' ? 'lit-green' : ''}"></i>
+      </span>
+      <span class="fit">${missText}</span>
+    </span>`;
+  }
+
+  function drilldown(metric, c){
+    const iv = c.interview && c.interview[metric.key];
+    if (!iv) return "";
+    const q = iv.questions.map(t => `<li>${t}</li>`).join("");
+    const l = iv.lookFor.map(t => `<li>${t}</li>`).join("");
+    return `
+      <div class="drilldown">
+        <div class="drilldown-label">Behavioral interview &mdash; probe this</div>
+        <ol class="ask-list">${q}</ol>
+        <div class="lookfor-block">
+          <div class="lookfor-label">What to look for in their answers</div>
+          <ul class="lookfor-list">${l}</ul>
+        </div>
+      </div>`;
+  }
+
+  function interpRow(metric, c){
+    const score = c.scores[metric.key];
+    const status = fitStatus(score, metric.benchmark);
+    const cls = status.inRange ? "in" : "out";
+    return `
+      <div class="metric-row interp-row">
+        <div class="label-col row-label">
+          <div class="row-icon">${ICONS[metric.icon]}</div>
+          <div class="row-text"><b>${metric.label}</b><span>${metric.sub}</span></div>
+        </div>
+        <div class="interp-body">
+          <span class="interp-score ${cls}">${score}</span>
+          <span class="interp-sentence">${bandText(metric.key, score)}</span>
+        </div>
+      </div>
+      ${(!status.inRange && DATA.mode !== "team") ? drilldown(metric, c) : ""}`;
+  }
+
+  function buildPage2(c, pageNum, totalPages){
+    const el = document.createElement("div");
+    el.className = "page page-2";
+    const groupsHtml = DATA.groups.map(group => `
+      <div class="group">
+        <div class="group-header"><div class="label-col"><h2>${group.title}</h2><p>${group.desc}</p></div></div>
+        ${group.metrics.map(m => interpRow(m, c)).join("")}
+      </div>`).join("");
+    const isTeam = DATA.mode === "team";
+    const eyebrowSuffix = isTeam ? "Interpretation" : "Interpretation &amp; Now What";
+    const subtitleText = isTeam
+      ? `A plain-language read of each Hartman facet for ${DATA.role}.`
+      : `A plain-language read of each Hartman facet for ${DATA.role}. Facets outside the benchmark range include a behavioral interview drill-down to explore further.`;
+    const footerText = isTeam
+      ? `<b>How to read this:</b> the number badge is colored the same way as the chart on page 1 &mdash; green means within the desired range for ${DATA.role}, red means outside it (underuse/blind spot below range, overuse/preference above it). This is a team benchmarking view for current employees, not a hiring comparison, so no interview drill-down is included. Use this alongside experience, skills, and other qualifications &mdash; it is a decision-support tool, not a standalone evaluation.`
+      : `<b>How to read this:</b> the number badge is colored the same way as the chart on page 1 &mdash; green means within the desired range for ${DATA.role}, red means outside it (underuse/blind spot below range, overuse/preference above it). Red facets carry an indented drill-down: interview questions to ask, then &mdash; nested one level deeper &mdash; what to listen for in the response. Use this alongside experience, skills, and other qualifications &mdash; it is a decision-support tool, not a standalone hiring decision.`;
+
+    el.innerHTML = `
+      <div class="masthead">
+        <div class="eyebrow">Page ${pageNum} of ${totalPages} &middot; ${eyebrowSuffix}</div>
+        <h1>${c.name} &mdash; What These Scores Mean</h1>
+        <p class="subtitle">${subtitleText}</p>
+      </div>
+      <div class="legend-bar">${candidateChip(c)}</div>
+      <div class="chart-card">${groupsHtml}</div>
+      <footer class="note">
+        ${footerText}
+      </footer>`;
+    return el;
+  }
+
+  const totalPages = 1 + DATA.candidates.length;
+  DATA.candidates.forEach((c, i) => {
+    document.body.appendChild(buildPage2(c, 2 + i, totalPages));
+  });
+})();
+</script>
